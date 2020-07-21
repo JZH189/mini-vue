@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据双向绑定的实践</title>
+</head>
+<body>
+    <main>
+        <p>请输入:</p>
+        <input type="text" id="input">
+        <p id="p"></p>
+    </main>
+</body>
+<script src="./reactive.js"></script>
+<script>
+    var vm = new Vue({
+        data: {
+            text: ''
+        }
+    })
+
+    const p = document.getElementById('p')
+    const input = document.getElementById('input')
+
+    input.addEventListener('keyup', function(e) {
+        vm.text = e.target.value
+    })
+
+    vm.$watch('text', str => p.innerHTML = str)
+</script>
+</html>

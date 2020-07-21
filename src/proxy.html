@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proxy实现响应式</title>
+</head>
+<body>
+    <main>
+        <p>请输入:</p>
+        <input type="text" id="input">
+        <p id="p"></p>
+    </main>
+    <script>
+        let input = document.getElementById('input')
+        let p = document.getElementById('p')
+        
+        let person = {}
+        let baseHandel = {
+            get(target,key,receiver){
+                console.log(`getting ${key}!`)
+                return Reflect.get(target,key,receiver)
+            },
+            set(target,key,value,receiver){
+                console.log('setting', target, key, value, receiver)
+                if (key === 'name') {
+                    input.value = value
+                    p.innerHTML = value
+                }
+                return Reflect.set(target, key, value, receiver)
+            }
+        }
+        let Obj = new Proxy(person, baseHandel)
+
+        input.addEventListener('keyup',function(e){
+            Obj.name = e.target.value
+        },false)
+    </script>
+</body>
+</html>
